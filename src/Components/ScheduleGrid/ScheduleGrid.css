@@ -9,7 +9,7 @@
   border: 1px solid black;
 }
 
-th {
+.table th {
   width: fit-content;
   min-width: 60px;
   font-size: medium;
@@ -17,7 +17,7 @@ th {
   text-align: center;
 }
 
-td {
+.table td {
   padding-left: 2px;
   padding-right: 2px;
   width: 100px;
@@ -27,14 +27,15 @@ td {
   align-content: center;
 }
 
-td div {
+.table td div {
   width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
+  text-align: center;
 }
 
-.cell {
+.table .cell {
   display: block;
   width: 100%;
   line-height: 1;

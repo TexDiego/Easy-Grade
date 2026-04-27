@@ -8,7 +8,7 @@ function AsideEditor({ selectedCell, onChange, onSave, onClose, conflicts, grade
   if (!selectedCell) return null;
 
   return (
-    <aside className="aside">
+    <aside className={`aside ${selectedCell ? "open" : ""}`}>
       <h3>Editar Aula</h3>
 
       <p>

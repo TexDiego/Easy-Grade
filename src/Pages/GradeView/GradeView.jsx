@@ -16,6 +16,7 @@ function GradeView() {
   const [isEdit, setIsEdit] = useState(false);
   const [conflicts, setConflicts] = useState([]);
   const { professores, salas, materias } = useData();
+  const isAsideOpen = selectedCell && isEdit;
 
   function AdicionarEixo() {
     setCurrentGrade(prev => {
@@ -290,108 +291,110 @@ function GradeView() {
   }
 
   return (
-    <div className="layout">
-      <GradeHeader grade={currentGrade} SwitchIsEdit={SwitchIsEdit} />
+    <div className={`layout ${isAsideOpen ? "with-aside" : ""}`}>
+      <div className="main">
+        <GradeHeader grade={currentGrade} SwitchIsEdit={SwitchIsEdit} />
 
-      <div className="body">
-        {currentGrade.grades.map((eixo) => (
-          <div key={eixo.id} className="eixo">
-            <input
-              disabled={!isEdit}
-              className="input_eixo"
-              type="text"
-              value={eixo.nome}
-              onChange={(e) => {
-                setCurrentGrade(prev => ({
-                  ...prev,
-                  grades: prev.grades.map(item =>
-                    item.id === eixo.id ? { ...item, nome: e.target.value } : item
-                  )
-                }));
-              }}
-            />
+        <div className="body">
+          {currentGrade.grades.map((eixo) => (
+            <div key={eixo.id} className="eixo">
+              <input
+                disabled={!isEdit}
+                className="input_eixo"
+                type="text"
+                value={eixo.nome}
+                onChange={(e) => {
+                  setCurrentGrade(prev => ({
+                    ...prev,
+                    grades: prev.grades.map(item =>
+                      item.id === eixo.id ? { ...item, nome: e.target.value } : item
+                    )
+                  }));
+                }}
+              />
 
-            {eixo.cursos.map((curso) => (
-              <div key={curso.id} className="curso">
-                <input
-                  disabled={!isEdit}
-                  className="input_curso"
-                  type="text"
-                  value={curso.nome}
-                  onChange={(e) => {
-                    setCurrentGrade(prev => ({
-                      ...prev,
-                      grades: prev.grades.map(item =>
-                        item.id === eixo.id ? { ...item, cursos: item.cursos.map(c => c.id === curso.id ? { ...c, nome: e.target.value } : c) } : item
-                      )
-                    }));
-                  }}
-                />
+              {eixo.cursos.map((curso) => (
+                <div key={curso.id} className="curso">
+                  <input
+                    disabled={!isEdit}
+                    className="input_curso"
+                    type="text"
+                    value={curso.nome}
+                    onChange={(e) => {
+                      setCurrentGrade(prev => ({
+                        ...prev,
+                        grades: prev.grades.map(item =>
+                          item.id === eixo.id ? { ...item, cursos: item.cursos.map(c => c.id === curso.id ? { ...c, nome: e.target.value } : c) } : item
+                        )
+                      }));
+                    }}
+                  />
 
-                {curso.semestres.map((semestre) => (
-                  <div key={semestre.id} className="semestre">
-                    <h4>{semestre.numero}º Semestre</h4>
+                  {curso.semestres.map((semestre) => (
+                    <div key={semestre.id} className="semestre">
+                      <h4>{semestre.numero}º Semestre</h4>
 
-                    <ScheduleGrid
-                      selectedCell={isEdit ? selectedCell : null}
-                      onSelectCell={isEdit ? setSelectedCell : () => { }}
-                      isEdit={isEdit}
-                      contexto={{
-                        eixoId: eixo.id,
-                        cursoId: curso.id,
-                        semestreId: semestre.id
-                      }}
-                      materias={materias}
-                      professores={professores}
-                      salas={salas}
-                      aulas={semestre.aulas}
-                      conflitos={conflicts.filter(c => c.semestreId === semestre.id)}
-                    />
+                      <ScheduleGrid
+                        selectedCell={isEdit ? selectedCell : null}
+                        onSelectCell={isEdit ? setSelectedCell : () => { }}
+                        isEdit={isEdit}
+                        contexto={{
+                          eixoId: eixo.id,
+                          cursoId: curso.id,
+                          semestreId: semestre.id
+                        }}
+                        materias={materias}
+                        professores={professores}
+                        salas={salas}
+                        aulas={semestre.aulas}
+                        conflitos={conflicts.filter(c => c.semestreId === semestre.id)}
+                      />
+                    </div>
+                  ))}
+                  <div className="btns">
+                    <button
+                      style={{ opacity: isEdit ? 1 : 0 }}
+                      onClick={() => AdicionarSemestre(eixo.id, curso.id)}>
+                      Adicionar Semestre
+                    </button>
+                    <button
+                      className="delete"
+                      style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
+                      onClick={() => ExcluirSemestre(eixo.id, curso.id)}>
+                      Excluir Semestre
+                    </button>
                   </div>
-                ))}
-                <div className="btns">
-                  <button
-                    style={{ opacity: isEdit ? 1 : 0 }}
-                    onClick={() => AdicionarSemestre(eixo.id, curso.id)}>
-                    Adicionar Semestre
-                  </button>
-                  <button
-                    className="delete"
-                    style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
-                    onClick={() => ExcluirSemestre(eixo.id, curso.id)}>
-                    Excluir Semestre
-                  </button>
                 </div>
+              ))}
+              <div className="btns">
+                <button
+                  style={{ opacity: isEdit ? 1 : 0 }}
+                  onClick={() => AdicionarCurso(eixo.id)}>
+                  Adicionar Curso
+                </button>
+                <button
+                  className="delete"
+                  style={{ opacity: isEdit ? 1 : 0 }}
+                  onClick={() => ExcluirCurso(eixo.id)}>
+                  Excluir Curso
+                </button>
               </div>
-            ))}
-            <div className="btns">
-              <button
-                style={{ opacity: isEdit ? 1 : 0 }}
-                onClick={() => AdicionarCurso(eixo.id)}>
-                Adicionar Curso
-              </button>
-              <button
-                className="delete"
-                style={{ opacity: isEdit ? 1 : 0 }}
-                onClick={() => ExcluirCurso(eixo.id)}>
-                Excluir Curso
-              </button>
             </div>
-          </div>
-        ))}
+          ))}
 
-        <div className="btns">
-          <button
-            style={{ opacity: isEdit ? 1 : 0 }}
-            onClick={() => AdicionarEixo()}>
-            Adicionar Eixo
-          </button>
-          <button
-            className="delete"
-            style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
-            onClick={() => ExcluirEixo()}>
-            Excluir Eixo
-          </button>
+          <div className="btns">
+            <button
+              style={{ opacity: isEdit ? 1 : 0 }}
+              onClick={() => AdicionarEixo()}>
+              Adicionar Eixo
+            </button>
+            <button
+              className="delete"
+              style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
+              onClick={() => ExcluirEixo()}>
+              Excluir Eixo
+            </button>
+          </div>
         </div>
       </div>
 

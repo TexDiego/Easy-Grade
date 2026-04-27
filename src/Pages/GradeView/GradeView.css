@@ -1,9 +1,20 @@
 .layout {
+  display: grid;
+  grid-template-columns: 1fr 0;
+  height: 100vh;
+
+  transition: grid-template-columns 0.4s ease;
+}
+
+.layout.with-aside {
+  grid-template-columns: 1fr 25vw;
+}
+
+.main {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  margin: 0px;
-  padding: 0px;
+  align-items: center;
+  overflow-y: auto;
 }
 
 .body {
@@ -14,24 +25,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    max-width: 50em;
+    width: 100%;
 }
 
 h1, h2, h3, h4 {
     font-family: Arial, Helvetica, sans-serif;
-}
-
-.grade {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0px;
-    margin-bottom: 20px;
-}
-
-.layout {
-    margin: 0px;
-    padding: 0px;
 }
 
 .eixo, .curso, .semestre {
