@@ -1,16 +1,58 @@
-# React + Vite
+# 📚 Easy Grade
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **Easy Grade** é uma aplicação web desenvolvida em React para criação e gerenciamento de grades horárias acadêmicas de forma visual e intuitiva.
 
-Currently, two official plugins are available:
+O sistema permite organizar cursos, semestres e aulas em uma estrutura hierárquica, facilitando a montagem de horários e a identificação de conflitos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 📅 Criação e edição de grades acadêmicas  
+- 🧩 Organização por:
+  - Eixos
+  - Cursos
+  - Semestres  
+- 🖱️ Edição visual de aulas em uma grade de horários  
+- ⚙️ Painel lateral (aside) para edição rápida  
+- ⚠️ Detecção de conflitos:
+  - Professor em dois lugares ao mesmo tempo  
+  - Sala ocupada simultaneamente  
+- 🔄 Reutilização de aulas entre cursos/semestres (sem conflito)  
+- 🗂️ Sistema de dados centralizado (Context API)  
+- 🧱 Estrutura preparada para integração com backend  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tecnologias utilizadas
+
+- ⚛️ React  
+- 🧭 React Router  
+- 🧠 Context API  
+- 🎨 CSS  
+
+---
+
+## 🧠 Arquitetura
+
+O projeto segue uma arquitetura baseada em:
+
+- Separação de responsabilidades (Componentes, Services, Context)  
+- Uso de IDs como fonte de verdade (normalização de dados)  
+- Camada de serviço preparada para futura integração com API  
+
+---
+
+## 🔮 Próximos passos
+
+- Persistência de dados (localStorage ou backend)  
+- Autenticação de usuários  
+- Compartilhamento de grades  
+- Exportação de horários  
+- Melhorias na detecção de conflitos  
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Diego**
