@@ -1,0 +1,28 @@
+.header {
+    background-color: #244999;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+.header_title {
+    color: white;
+    font-size: 24px;
+    margin: 10px;
+    text-align: center;
+    justify-self: center;
+}
+
+.header_btn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    justify-self: start;
+}

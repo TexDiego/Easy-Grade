@@ -1,0 +1,52 @@
+.table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background-color: white;
+  border: 1px solid black;
+}
+
+th {
+  width: fit-content;
+  min-width: 60px;
+  font-size: medium;
+  padding: 0px;
+  text-align: center;
+}
+
+td {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 100px;
+  max-width: 100px;
+  vertical-align: top;
+  text-align: center;
+  align-content: center;
+}
+
+td div {
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.cell {
+  display: block;
+  width: 100%;
+  line-height: 1;
+  box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  font-size: 10px;
+  border: none;
+  margin: 1px 0;
+  padding: 1px;
+  font-family: Arial, Helvetica, sans-serif;
+}

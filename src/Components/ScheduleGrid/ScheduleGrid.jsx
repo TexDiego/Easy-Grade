@@ -1,0 +1,117 @@
+import "./ScheduleGrid.css"
+import { useEffect } from "react"
+
+function ScheduleGrid({ selectedCell, 
+                        onSelectCell, 
+                        isEdit, 
+                        contexto, 
+                        aulas, 
+                        conflitos,
+                        professores,
+                        materias,
+                        salas }) 
+  {
+  const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const horarios = ["19:30 - 21:10", "21:20 - 23:00"];
+
+  useEffect(() => {
+    const textareas = document.querySelectorAll(".input");
+    textareas.forEach((textarea) => {
+      const handleInput = () => {
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+      };
+      textarea.addEventListener("input", handleInput);
+      return () => textarea.removeEventListener("input", handleInput);
+    });
+  }, [isEdit]);
+
+  return (
+    <div>
+      <table border="1" className="table">
+        <thead>
+          <tr>
+            <th>Horário</th>
+            {dias.map((dia) => (
+              <th key={dia}>{dia}</th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {horarios.map((hora) => (
+            <tr key={hora}>
+              <td>{hora}</td>
+
+              {dias.map((dia) => {
+                const isSelected =
+                  selectedCell?.dia === dia &&
+                  selectedCell?.hora === hora &&
+                  selectedCell?.eixoId === contexto.eixoId &&
+                  selectedCell?.cursoId === contexto.cursoId &&
+                  selectedCell?.semestreId === contexto.semestreId;
+
+                const hasConflict = conflitos.some(c =>
+                  c.dia === dia &&
+                  c.hora === hora &&
+                  c.eixoId === contexto.eixoId &&
+                  c.cursoId === contexto.cursoId &&
+                  c.semestreId === contexto.semestreId
+                );
+
+                const aula = aulas?.find(
+                  a => a.dia === dia && a.hora === hora
+                );
+  
+                const professor = professores.find(p => p.id === aula?.professorId)?.nome;
+                const materia = materias.find(m => m.id === aula?.materiaId)?.nome;
+                const sala = salas.find(s => s.id === aula?.salaId)?.nome;
+
+                return (
+                  <td
+                    key={`${dia}-${hora}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectCell({
+                        ...contexto,
+                        dia,
+                        hora,
+                        professorId: aula?.professorId,
+                        materiaId: aula?.materiaId,
+                        salaId: aula?.salaId
+                      });
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      backgroundColor: hasConflict
+                        ? (isSelected ? "#f87171" : "#fca5a5") // vermelho
+                        : (isSelected ? "#dbeafe" : "white"),
+                      transition: "background-color 0.3s"
+                    }}>
+                    <div>
+                      {aula ? (
+                        <>
+                          <div className="cell">{materia}</div>
+                          <div className="cell">{professor}</div>
+                          <div className="cell">{sala}</div>
+                        </>
+                      ) : (
+                        <>
+                          <label className="cell">Aula</label>
+                          <label className="cell">Professor</label>
+                          <label className="cell">Sala</label>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default ScheduleGrid;

@@ -1,0 +1,126 @@
+.layout {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+}
+
+.body {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1, h2, h3, h4 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.grade {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    margin-bottom: 20px;
+}
+
+.layout {
+    margin: 0px;
+    padding: 0px;
+}
+
+.eixo, .curso, .semestre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    transition: 0.5s;
+    padding: 10px;
+}
+
+.eixo input {
+    width: 100%;
+}
+
+.eixo .input_eixo:disabled {
+    background-color: lightblue;
+}
+
+.eixo .input_curso:disabled {
+    background-color: lightgreen;
+}
+
+.eixo:hover {
+    background-color: lightblue;
+    
+    .input_eixo {
+        background-color: lightblue;
+        border: 1.5px solid lightblue;
+        transition: 0.3s;
+    }
+    .input_curso {
+        background-color: lightblue;
+        border: 1.5px solid lightblue;
+        transition: 0.3s;
+    }
+}
+
+.curso:hover {
+    background-color: lightgreen;
+    .input_curso {
+        background-color: lightgreen;
+        border: 1.5px solid lightgreen;
+        transition: 0.3s;
+    }
+}
+
+.semestre:hover {
+    background-color: lightyellow;
+}
+
+.input_curso, .input_eixo {
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    margin: 5px;
+    padding: 5px;
+    font-weight: bold;
+    background-color: #ccc;
+    border: 1.5px solid black;
+    transition: 0.3s;
+}
+
+.input_eixo {
+    font-size: 20px;
+}
+
+.input_curso:disabled, .input_eixo:disabled {
+    background-color: transparent;
+    color: black;
+}
+
+.btns {
+    display: flex;
+    gap: 10px;
+}
+
+.btns button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 5px;
+}
+
+.delete {
+    background-color: #ff4d4d;
+    color: white;
+}
