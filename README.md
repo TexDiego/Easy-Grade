@@ -53,6 +53,14 @@ O projeto segue uma arquitetura baseada em:
 
 ---
 
+## Preview do projeto
+
+![Demo](./EasyGradeV1-1.gif)
+
+![Demo](./EasyGradeV1-2.gif)
+
+---
+
 ## 👨‍💻 Autor
 
 Desenvolvido por **Diego**
