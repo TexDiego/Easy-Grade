@@ -11,10 +11,11 @@
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .body {
@@ -26,6 +27,13 @@
     align-items: center;
     justify-content: center;
     max-width: 50em;
+    width: 100%;
+}
+
+.main .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     width: 100%;
 }
 
@@ -43,27 +51,57 @@ h1, h2, h3, h4 {
     padding: 10px;
 }
 
-.eixo input {
+.eixo .select_eixo {
     width: 100%;
+    text-align: center;
+    opacity: 1;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1.5px solid black;
+    border-radius: 0px;
 }
 
-.eixo .input_eixo:disabled {
+.curso .select_curso {
+    width: 100%;
+    text-align: center;
+    opacity: 1;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1.5px solid black;
+    border-radius: 0px;
+}
+
+.eixo .select_eixo:disabled {
     background-color: lightblue;
+    opacity: 1;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1.5px solid black;
+    border-radius: 0px;
 }
 
-.eixo .input_curso:disabled {
+.eixo .select_curso:disabled {
     background-color: lightgreen;
+    opacity: 1;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1.5px solid black;
+    border-radius: 0px;
 }
 
 .eixo:hover {
     background-color: lightblue;
     
-    .input_eixo {
+    .select_eixo {
         background-color: lightblue;
         border: 1.5px solid lightblue;
         transition: 0.3s;
     }
-    .input_curso {
+    .select_eixo {
         background-color: lightblue;
         border: 1.5px solid lightblue;
         transition: 0.3s;
@@ -72,7 +110,7 @@ h1, h2, h3, h4 {
 
 .curso:hover {
     background-color: lightgreen;
-    .input_curso {
+    .select_curso {
         background-color: lightgreen;
         border: 1.5px solid lightgreen;
         transition: 0.3s;
@@ -83,23 +121,22 @@ h1, h2, h3, h4 {
     background-color: lightyellow;
 }
 
-.input_curso, .input_eixo {
+.select_curso, .select_eixo {
     font-size: 14px;
     text-align: center;
     border: none;
     margin: 5px;
     padding: 5px;
     font-weight: bold;
-    background-color: #ccc;
     border: 1.5px solid black;
     transition: 0.3s;
 }
 
-.input_eixo {
+.select_eixo {
     font-size: 20px;
 }
 
-.input_curso:disabled, .input_eixo:disabled {
+.select_curso:disabled, .select_eixo:disabled {
     background-color: transparent;
     color: black;
 }

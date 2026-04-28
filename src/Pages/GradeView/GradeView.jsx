@@ -15,7 +15,7 @@ function GradeView() {
   const [selectedCell, setSelectedCell] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [conflicts, setConflicts] = useState([]);
-  const { professores, salas, materias } = useData();
+  const { professores, salas, materias, eixos, cursos } = useData();
   const isAsideOpen = selectedCell && isEdit;
 
   function AdicionarEixo() {
@@ -293,42 +293,94 @@ function GradeView() {
   return (
     <div className={`layout ${isAsideOpen ? "with-aside" : ""}`}>
       <div className="main">
-        <GradeHeader grade={currentGrade} SwitchIsEdit={SwitchIsEdit} />
+        <GradeHeader 
+          className="header"
+          isEdit={isEdit}
+          grade={currentGrade} 
+          SwitchIsEdit={SwitchIsEdit} />
 
         <div className="body">
           {currentGrade.grades.map((eixo) => (
             <div key={eixo.id} className="eixo">
-              <input
+              <select
                 disabled={!isEdit}
-                className="input_eixo"
-                type="text"
-                value={eixo.nome}
+                className="select_eixo"
+                value={eixo.eixoId || ""}
                 onChange={(e) => {
+                  const value = e.target.value;
+
                   setCurrentGrade(prev => ({
                     ...prev,
                     grades: prev.grades.map(item =>
-                      item.id === eixo.id ? { ...item, nome: e.target.value } : item
+                      item.id === eixo.id
+                        ? { ...item, eixoId: value }
+                        : item
                     )
                   }));
-                }}
-              />
+                }}>
+                <option value="">Selecione um eixo</option>
+
+                {eixos
+                  .filter(e => {
+                    const selecionados = currentGrade.grades
+                      .filter(g => g.id !== eixo.id)
+                      .map(g => g.eixoId)
+                      .filter(Boolean);
+
+                    return e.id === eixo.eixoId || !selecionados.includes(e.id);
+                  })
+                  .map(e => (
+                    <option key={e.id} value={e.id}>
+                      {e.nome}
+                    </option>
+                  ))
+                }
+              </select>
 
               {eixo.cursos.map((curso) => (
                 <div key={curso.id} className="curso">
-                  <input
+                  <select
                     disabled={!isEdit}
-                    className="input_curso"
-                    type="text"
-                    value={curso.nome}
+                    className="select_curso"
+                    value={curso.cursoId || ""}
                     onChange={(e) => {
+                      const value = e.target.value;
+
                       setCurrentGrade(prev => ({
                         ...prev,
-                        grades: prev.grades.map(item =>
-                          item.id === eixo.id ? { ...item, cursos: item.cursos.map(c => c.id === curso.id ? { ...c, nome: e.target.value } : c) } : item
+                        grades: prev.grades.map(g =>
+                          g.id === eixo.id
+                            ? {
+                              ...g,
+                              cursos: g.cursos.map(c =>
+                                c.id === curso.id
+                                  ? { ...c, cursoId: value }
+                                  : c
+                              )
+                            }
+                            : g
                         )
                       }));
-                    }}
-                  />
+                    }}>
+                    <option value="">Selecione um curso</option>
+
+                    {cursos
+                      .filter(c => {
+                        const selecionados = currentGrade.grades
+                          .flatMap(g => g.cursos)
+                          .filter(cursoItem => cursoItem.id !== curso.id)
+                          .map(cursoItem => cursoItem.cursoId)
+                          .filter(Boolean);
+
+                        return c.id === curso.cursoId || !selecionados.includes(c.id);
+                      })
+                      .map(c => (
+                        <option key={c.id} value={c.id}>
+                          {c.nome}
+                        </option>
+                      ))
+                    }
+                  </select>
 
                   {curso.semestres.map((semestre) => (
                     <div key={semestre.id} className="semestre">
