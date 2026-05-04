@@ -10,6 +10,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/grade/:id" element={<GradeView />} />
       <Route path="/datas" element={<Datas />} />
+      <Route path="/new-grade/:id" element={<GradeView />} />
     </Routes>
   );
 }

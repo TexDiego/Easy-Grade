@@ -8,6 +8,11 @@ function Home() {
   
   let dados = [
     {
+      id: "0",
+      nome: "Adicionar grade",
+      grades: []
+    },
+    {
       id: "1",
       nome: "Grade 2026 - 01",
       grades: [
@@ -89,20 +94,8 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className="home">
       <Grades grades={grades} />
-
-      <div className="add">
-        <input
-          type="text"
-          placeholder="Nova grade..."
-          value={newGradeName}
-          onChange={(e) => setNewGradeName(e.target.value)}
-        />
-        <button onClick={() => CreateGrade(newGradeName)}>
-          Criar
-        </button>
-      </div>
 
       <div>
         <Link to="/datas">Gerenciar dados</Link>

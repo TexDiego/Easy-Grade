@@ -1,8 +1,18 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: white;
     margin: 0;
     padding: 0px;
+}
+
+.datas-container {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
 }
 
 h1 {
@@ -13,9 +23,21 @@ h1 {
 select {
     width: 100%;
     padding: 8px;
-    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.select {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: fit-content;
+}
+
+.pages {
+    width: fit-content;
 }
 
 table {
@@ -32,7 +54,7 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: transparent;
 }
 
 .edit {
@@ -41,10 +63,78 @@ th {
     border: none;
 }
 
+.delete {
+    width: fit-content;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
 .content {
     margin: 20px;
+    width: 100%;
+    max-width: 600px;
 }
 
 .select {
-    margin: 20px;
+    margin: 20px 0px;
+    width: 60dvw;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: fit-content;
+}
+
+.searchBar {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: fit-content;
+    width: 60dvw;
+}
+
+.pagination {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.add {
+    width: fit-content;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    gap: 10px;
+}
+
+.add input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add button {
+    padding: 5px 10px;
+    border: none;
+    background-color: lightgreen;
+    color: black;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add button:hover {
+    background-color: limegreen;
 }

@@ -1,27 +1,35 @@
 .grades {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 10px;
 }
 
-.grades .item {
-    width: 100%;
-    max-width: 400px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
-}
-
-.grades .item:hover {
-    background-color: #e0e0e0;
+.items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .link {
     text-decoration: none;
     color: #333;
-    font-size: 18px;
+    font-size: 14px;
+    width: 6em;
+    height: 6em;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.link:hover {
+    background-color: #e0e0e0;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
