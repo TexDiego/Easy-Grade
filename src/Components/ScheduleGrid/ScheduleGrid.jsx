@@ -47,25 +47,25 @@ function ScheduleGrid({ selectedCell,
                 const isSelected =
                   selectedCell?.dia === dia &&
                   selectedCell?.hora === hora &&
-                  selectedCell?.eixoId === contexto.eixoId &&
-                  selectedCell?.cursoId === contexto.cursoId &&
-                  selectedCell?.semestreId === contexto.semestreId;
+                  selectedCell?.eixo_id === contexto.eixo_id &&
+                  selectedCell?.curso_id === contexto.curso_id &&
+                  selectedCell?.semestre_id === contexto.semestre_id;
 
                 const hasConflict = conflitos.some(c =>
                   c.dia === dia &&
                   c.hora === hora &&
-                  c.eixoId === contexto.eixoId &&
-                  c.cursoId === contexto.cursoId &&
-                  c.semestreId === contexto.semestreId
+                  c.eixo_id === contexto.eixo_id &&
+                  c.curso_id === contexto.curso_id &&
+                  c.semestre_id === contexto.semestre_id
                 );
 
                 const aula = aulas?.find(
                   a => a.dia === dia && a.hora === hora
                 );
   
-                const professor = professores.find(p => p.id === aula?.professorId)?.nome;
-                const materia = materias.find(m => m.id === aula?.materiaId)?.nome;
-                const sala = salas.find(s => s.id === aula?.salaId)?.nome;
+                const professor = professores.find(p => p.id === aula?.professor_id)?.name;
+                const materia = materias.find(m => m.id === aula?.materia_id)?.name;
+                const sala = salas.find(s => s.id === aula?.sala_id)?.name;
 
                 return (
                   <td
@@ -76,9 +76,9 @@ function ScheduleGrid({ selectedCell,
                         ...contexto,
                         dia,
                         hora,
-                        professorId: aula?.professorId,
-                        materiaId: aula?.materiaId,
-                        salaId: aula?.salaId
+                        professor_id: aula?.professor_id,
+                        materia_id: aula?.materia_id,
+                        sala_id: aula?.sala_id
                       });
                     }}
                     style={{

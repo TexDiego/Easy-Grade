@@ -11,7 +11,7 @@ function GradeHeader({ grade, isEdit, SwitchIsEdit }) {
         </Link>
       </div>
 
-      <h1>{grade.nome}</h1>
+      <h1>{grade.name}</h1>
 
       <div className="right">
         <button

@@ -1,266 +1,70 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ScheduleGrid from "../../Components/ScheduleGrid/ScheduleGrid";
 import AsideEditor from "../../Components/AsideEditor/AsideEditor";
 import GradeHeader from "../../Components/Header/GradeHeader/GradeHeader";
 import DataService from "../../Services/DataService";
-import { useState, useEffect } from "react";
-import { useData } from "../../Context/DataContext";
+import { useState, useEffect, useMemo } from "react";
+import GradeService from "../../Services/GradeService";
+import { UseGradeStructure } from "./Hooks/UseGradeStructure";
+import { UseSchedule } from "./Hooks/UseSchedule";
+import UseConflicts from "./Hooks/UseConflicts";
 import "./GradeView.css";
-import materias from "../../Data/Materias";
 
 function GradeView() {
-  const location = useLocation();
-  const grade = location.state?.grade;
-  const [currentGrade, setCurrentGrade] = useState(grade);
+  const [currentGrade, setCurrentGrade] = useState(null);
+  const [professores, setProfessores] = useState([]);
+  const [materias, setMaterias] = useState([]);
+  const [salas, setSalas] = useState([]);
+  const [eixos, setEixos] = useState([]);
+  const [cursos, setCursos] = useState([]);
   const [selectedCell, setSelectedCell] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [conflicts, setConflicts] = useState([]);
-  const { professores, salas, materias, eixos, cursos } = useData();
+  const { updateAula, deleteAula } = UseSchedule(currentGrade, setCurrentGrade);
   const isAsideOpen = selectedCell && isEdit;
 
-  function AdicionarEixo() {
-    setCurrentGrade(prev => {
-      return {
-        ...prev,
-        grades: [
-          ...prev.grades,
-          {
-            id: crypto.randomUUID(),
-            nome: "Novo Eixo",
-            cursos: [
-              {
-                id: crypto.randomUUID(),
-                nome: "Novo Curso",
-                semestres: [
-                  {
-                    id: crypto.randomUUID(),
-                    numero: 1,
-                    aulas: []
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [professoresData, materiasData, salasData, eixosData, cursosData, gradeData] = await Promise.all([
+          DataService.getProfessores(),
+          DataService.getMaterias(),
+          DataService.getSalas(),
+          DataService.getEixos(),
+          DataService.getCursos(),
+          GradeService.getGrade(id)
+        ]);
+
+        setCurrentGrade(gradeData);
+        setProfessores(professoresData);
+        setMaterias(materiasData);
+        setSalas(salasData);
+        setEixos(eixosData);
+        setCursos(cursosData);
+      } catch (err) {
+        console.error(err);
       }
-    })
-  }
+    }
 
-  function AdicionarCurso(eixo_id) {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.map(eixo => {
-        if (eixo.id === eixo_id) {
-          return {
-            ...eixo,
-            cursos: [
-              ...eixo.cursos,
-              {
-                id: crypto.randomUUID(),
-                nome: "Novo Curso",
-                semestres: [
-                  {
-                    id: crypto.randomUUID(),
-                    numero: 1,
-                    aulas: []
-                  }
-                ]
-              }
-            ]
-          };
-        }
-        return eixo;
-      })
-    }));
-  }
+    loadData();
+  }, [id]);
 
-  function AdicionarSemestre(eixo_id, curso_id) {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.map(eixo => {
-        if (eixo.id === eixo_id) {
-          return {
-            ...eixo,
-            cursos: eixo.cursos.map(curso => {
-              if (curso.id === curso_id) {
-                return {
-                  ...curso,
-                  semestres: [
-                    ...curso.semestres,
-                    {
-                      id: crypto.randomUUID(),
-                      numero: curso.semestres.length + 1,
-                      aulas: []
-                    }
-                  ]
-                };
-              }
-              return curso;
-            })
-          };
-        }
-        return eixo;
-      })
-    }));
-  }
+  const { AdicionarEixo, AdicionarCurso, AdicionarSemestre, ExcluirEixo, ExcluirCurso, ExcluirSemestre } = UseGradeStructure(currentGrade, setCurrentGrade);
+  const conflicts = UseConflicts(currentGrade);
 
-  function ExcluirEixo() {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.slice(0, -1)
-    }));
-  }
-
-  function ExcluirCurso(eixo_id) {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.map(eixo => {
-        if (eixo.id === eixo_id) {
-          return {
-            ...eixo,
-            cursos: eixo.cursos.slice(0, -1)
-          };
-        }
-        return eixo;
-      })
-    }));
-  }
-
-  function ExcluirSemestre(eixo_id, curso_id) {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.map(eixo => {
-        if (eixo.id === eixo_id) {
-          return {
-            ...eixo,
-            cursos: eixo.cursos.map(curso => {
-              if (curso.id === curso_id) {
-                return {
-                  ...curso,
-                  semestres: curso.semestres.slice(0, -1)
-                };
-              }
-              return curso;
-            })
-          };
-        }
-        return eixo;
-      })
-    }));
-  }
-
-  if (!grade) {
-    return <p>Grade não encontrada</p>;
+  if (!currentGrade) {
+    return <p>Carregando...</p>;
   }
 
   function SwitchIsEdit() {
     setIsEdit(!isEdit);
   }
 
-  function updateAula(cell, data) {
-    setCurrentGrade(prev => ({
-      ...prev,
-      grades: prev.grades.map(eixo => {
-        if (eixo.id !== cell.eixoId) return eixo;
-
-        return {
-          ...eixo,
-          cursos: eixo.cursos.map(curso => {
-            if (curso.id !== cell.cursoId) return curso;
-
-            return {
-              ...curso,
-              semestres: curso.semestres.map(semestre => {
-                if (semestre.id !== cell.semestreId) return semestre;
-
-                const aulasFiltradas = semestre.aulas.filter(
-                  a => !(a.dia === cell.dia && a.hora === cell.hora)
-                );
-
-                return {
-                  ...semestre,
-                  aulas: [
-                    ...aulasFiltradas,
-                    {
-                      ...cell,
-                      professorId: data.professorId,
-                      materiaId: data.materiaId,
-                      salaId: data.salaId
-                    }
-                  ]
-                };
-              })
-            };
-          })
-        };
-      })
-    }));
-  }
-
-  function calculateConflicts(grade) {
-    const conflitos = [];
-    const mapa = {};
-
-    grade.grades.forEach(eixo => {
-      eixo.cursos.forEach(curso => {
-        curso.semestres.forEach(semestre => {
-          semestre.aulas.forEach(aula => {
-            const key = `${aula.dia}-${aula.hora}`;
-
-            if (!mapa[key]) mapa[key] = [];
-
-            mapa[key].push({
-              ...aula,
-              eixoId: eixo.id,
-              cursoId: curso.id,
-              semestreId: semestre.id
-            });
-          });
-        });
-      });
-    });
-
-    Object.values(mapa).forEach(lista => {
-      lista.forEach(aulaA => {
-        lista.forEach(aulaB => {
-          if (aulaA === aulaB) return;
-
-          const mesmoProfessor = aulaA.professorId === aulaB.professorId;
-          const mesmaSala = aulaA.salaId === aulaB.salaId;
-          const mesmaMateria = aulaA.materiaId === aulaB.materiaId;
-
-          if (
-            mesmoProfessor &&
-            (!mesmaSala || !mesmaMateria)
-          ) {
-            conflitos.push(aulaA);
-          }
-
-          if (
-            mesmaSala &&
-            (!mesmoProfessor || !mesmaMateria)
-          ) {
-            conflitos.push(aulaA);
-          }
-        });
-      });
-    });
-
-    return conflitos;
-  }
-
-  useEffect(() => {
-    if (!currentGrade) return;
-
-    const novosConflitos = calculateConflicts(currentGrade);
-    setConflicts(novosConflitos);
-
-  }, [currentGrade]);
-
   const selectedAula = currentGrade.grades
     .flatMap(e => e.cursos)
     .flatMap(c => c.semestres)
-    .find(s => s.id === selectedCell?.semestreId)
+    .find(s => s.id === selectedCell?.semestre_id)
     ?.aulas.find(a =>
       a.dia === selectedCell?.dia &&
       a.hora === selectedCell?.hora
@@ -270,22 +74,22 @@ function GradeView() {
     selectedAula &&
     c.dia === selectedCell.dia &&
     c.hora === selectedCell.hora &&
-    c.professorId === selectedAula.professorId &&
+    c.professor_id === selectedAula.professor_id &&
     (
-      c.eixoId !== selectedCell.eixoId ||
-      c.cursoId !== selectedCell.cursoId ||
-      c.semestreId !== selectedCell.semestreId
+      c.eixo_id !== selectedCell.eixo_id ||
+      c.curso_id !== selectedCell.curso_id ||
+      c.semestre_id !== selectedCell.semestre_id
     )
   );
 
   function getInfoFromIds(grade, conflito) {
-    const eixo = grade.grades.find(e => e.id === conflito.eixoId);
-    const curso = eixo?.cursos.find(c => c.id === conflito.cursoId);
-    const semestre = curso?.semestres.find(s => s.id === conflito.semestreId);
+    const eixo = grade.grades.find(e => e.id === conflito.eixo_id);
+    const curso = eixo?.cursos.find(c => c.id === conflito.curso_id);
+    const semestre = curso?.semestres.find(s => s.id === conflito.semestre_id);
 
     return {
-      eixo: eixo?.nome,
-      curso: curso?.nome,
+      eixo: eixo?.eixo_id,
+      curso: curso?.curso_id,
       semestre: semestre?.numero
     };
   }
@@ -293,10 +97,10 @@ function GradeView() {
   return (
     <div className={`layout ${isAsideOpen ? "with-aside" : ""}`}>
       <div className="main">
-        <GradeHeader 
+        <GradeHeader
           className="header"
           isEdit={isEdit}
-          grade={currentGrade} 
+          grade={currentGrade}
           SwitchIsEdit={SwitchIsEdit} />
 
         <div className="body">
@@ -305,15 +109,15 @@ function GradeView() {
               <select
                 disabled={!isEdit}
                 className="select_eixo"
-                value={eixo.eixoId || ""}
+                value={eixo.eixo_id || ""}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const value = Number(e.target.value);
 
                   setCurrentGrade(prev => ({
                     ...prev,
                     grades: prev.grades.map(item =>
                       item.id === eixo.id
-                        ? { ...item, eixoId: value }
+                        ? { ...item, eixo_id: value }
                         : item
                     )
                   }));
@@ -324,14 +128,14 @@ function GradeView() {
                   .filter(e => {
                     const selecionados = currentGrade.grades
                       .filter(g => g.id !== eixo.id)
-                      .map(g => g.eixoId)
+                      .map(g => g.eixo_id)
                       .filter(Boolean);
 
-                    return e.id === eixo.eixoId || !selecionados.includes(e.id);
+                    return e.id === eixo.eixo_id || !selecionados.includes(e.id);
                   })
                   .map(e => (
                     <option key={e.id} value={e.id}>
-                      {e.nome}
+                      {e.name}
                     </option>
                   ))
                 }
@@ -342,9 +146,9 @@ function GradeView() {
                   <select
                     disabled={!isEdit}
                     className="select_curso"
-                    value={curso.cursoId || ""}
+                    value={curso.curso_id || ""}
                     onChange={(e) => {
-                      const value = e.target.value;
+                      const value = Number(e.target.value);
 
                       setCurrentGrade(prev => ({
                         ...prev,
@@ -354,7 +158,7 @@ function GradeView() {
                               ...g,
                               cursos: g.cursos.map(c =>
                                 c.id === curso.id
-                                  ? { ...c, cursoId: value }
+                                  ? { ...c, curso_id: value }
                                   : c
                               )
                             }
@@ -369,14 +173,14 @@ function GradeView() {
                         const selecionados = currentGrade.grades
                           .flatMap(g => g.cursos)
                           .filter(cursoItem => cursoItem.id !== curso.id)
-                          .map(cursoItem => cursoItem.cursoId)
+                          .map(cursoItem => cursoItem.curso_id)
                           .filter(Boolean);
 
-                        return c.id === curso.cursoId || !selecionados.includes(c.id);
+                        return c.id === curso.curso_id || !selecionados.includes(c.id);
                       })
                       .map(c => (
                         <option key={c.id} value={c.id}>
-                          {c.nome}
+                          {c.name}
                         </option>
                       ))
                     }
@@ -391,28 +195,34 @@ function GradeView() {
                         onSelectCell={isEdit ? setSelectedCell : () => { }}
                         isEdit={isEdit}
                         contexto={{
-                          eixoId: eixo.id,
-                          cursoId: curso.id,
-                          semestreId: semestre.id
+                          eixo_id: eixo.id,
+                          curso_id: curso.id,
+                          semestre_id: semestre.id
                         }}
                         materias={materias}
                         professores={professores}
                         salas={salas}
                         aulas={semestre.aulas}
-                        conflitos={conflicts.filter(c => c.semestreId === semestre.id)}
+                        conflitos={conflicts.filter(c => c.semestre_id === semestre.id) }
                       />
                     </div>
                   ))}
                   <div className="btns">
                     <button
                       style={{ opacity: isEdit ? 1 : 0 }}
-                      onClick={() => AdicionarSemestre(eixo.id, curso.id)}>
+                      onClick={() => AdicionarSemestre(curso.id)}>
                       Adicionar Semestre
                     </button>
                     <button
                       className="delete"
                       style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
-                      onClick={() => ExcluirSemestre(eixo.id, curso.id)}>
+                      onClick={() => {
+                        const ultimoSemestre = curso.semestres.at(-1);
+
+                        if (ultimoSemestre) {
+                          ExcluirSemestre(ultimoSemestre.id);
+                        }
+                      }}>
                       Excluir Semestre
                     </button>
                   </div>
@@ -427,7 +237,13 @@ function GradeView() {
                 <button
                   className="delete"
                   style={{ opacity: isEdit ? 1 : 0 }}
-                  onClick={() => ExcluirCurso(eixo.id)}>
+                  onClick={() => {
+                    const ultimoCurso = eixo.cursos.at(-1);
+
+                    if (ultimoCurso) {
+                      ExcluirCurso(ultimoCurso.id);
+                    }
+                  }}>
                   Excluir Curso
                 </button>
               </div>
@@ -437,13 +253,19 @@ function GradeView() {
           <div className="btns">
             <button
               style={{ opacity: isEdit ? 1 : 0 }}
-              onClick={() => AdicionarEixo()}>
+              onClick={() => AdicionarEixo(currentGrade.id)}>
               Adicionar Eixo
             </button>
             <button
               className="delete"
               style={{ opacity: isEdit && currentGrade.grades.length > 0 ? 1 : 0 }}
-              onClick={() => ExcluirEixo()}>
+              onClick={() => {
+                const ultimoEixo = currentGrade.grades.at(-1);
+
+                if (ultimoEixo) {
+                  ExcluirEixo(ultimoEixo.id);
+                }
+              }}>
               Excluir Eixo
             </button>
           </div>
@@ -453,10 +275,13 @@ function GradeView() {
       {selectedCell && isEdit && (
         <AsideEditor
           grade={currentGrade}
-          conflicts={selectedConflicts}
           selectedCell={selectedCell}
+          conflitos={selectedConflicts.map(c => ({
+            ...c,
+            info: getInfoFromIds(currentGrade, c)
+          }))}
           onChange={setSelectedCell}
-          onSave={(data) => updateAula(selectedCell, data)}
+          onSave={() => updateAula(selectedCell)}
           onClose={() => setSelectedCell(null)} />
       )}
     </div>

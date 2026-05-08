@@ -1,20 +1,34 @@
-import professores from "../Data/Professores";
-import materias from "../Data/Materias";
-import cursos from "../Data/Cursos";
-import salas from "../Data/Salas";
-import eixos from "../Data/Eixos";
-import aulas from "../Data/Aulas";
+const API = "http://localhost:3000";
 
-const DataService = {
-    getProfessores: () => professores,
-    getMaterias: () => materias,
-    getCursos: () => cursos,
-    getSalas: () => salas,
-    getEixos: () => eixos,
-    getAulas: () => aulas,
-    addAula: (aula) => {
-        aulas.push(aula);
-    }
+async function getProfessores() {
+    const res = await fetch(`${API}/professores`);
+    return await res.json();
+}
+
+async function getMaterias() {
+    const res = await fetch(`${API}/materias`);
+    return await res.json();
+}
+
+async function getSalas() {
+    const res = await fetch(`${API}/salas`);
+    return await res.json();
+}
+
+async function getEixos() {
+    const res = await fetch(`${API}/eixos`);
+    return await res.json();
+}
+
+async function getCursos() {
+    const res = await fetch(`${API}/cursos`);
+    return await res.json();
+}
+
+export default {
+    getProfessores,
+    getMaterias,
+    getSalas,
+    getEixos,
+    getCursos
 };
-
-export default DataService;

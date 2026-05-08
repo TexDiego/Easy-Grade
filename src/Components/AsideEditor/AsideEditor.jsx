@@ -1,9 +1,37 @@
 import "./AsideEditor.css";
+import { useEffect } from "react";
 import { useData } from "../../Context/DataContext";
 
 function AsideEditor({ selectedCell, onChange, onSave, onClose, conflicts, grade }) {
 
-  const { professores, salas, materias } = useData();
+  const { professores, setProfessores, salas, setSalas, materias, setMaterias } = useData();
+
+  useEffect(() => {
+    if (!selectedCell) return;
+
+    async function loadData() {
+      try {
+        const [profRes, salasRes, matRes] = await Promise.all([
+          fetch("http://localhost:3000/professores"),
+          fetch("http://localhost:3000/salas"),
+          fetch("http://localhost:3000/materias")
+        ]);
+
+        const professoresData = await profRes.json();
+        const salasData = await salasRes.json();
+        const materiasData = await matRes.json();
+
+        setProfessores(professoresData);
+        setSalas(salasData);
+        setMaterias(materiasData);
+
+      } catch (err) {
+        console.error("Erro ao carregar dados do aside:", err);
+      }
+    }
+
+    loadData();
+  }, [selectedCell]);
 
   if (!selectedCell) return null;
 
@@ -16,37 +44,37 @@ function AsideEditor({ selectedCell, onChange, onSave, onClose, conflicts, grade
       </p>
 
       <select
-        value={selectedCell.materiaId || ""}
+        value={selectedCell.materia_id || ""}
         onChange={(e) =>
-          onChange({ ...selectedCell, materiaId: e.target.value })}>
+          onChange({ ...selectedCell, materia_id: e.target.value })}>
         <option value="">Selecione a matéria</option>
         {materias.map(m => (
           <option key={m.id} value={m.id}>
-            {m.nome}
+            {m.name}
           </option>
         ))}
       </select>
 
       <select
-        value={selectedCell.professorId || ""}
+        value={selectedCell.professor_id || ""}
         onChange={(e) =>
-          onChange({ ...selectedCell, professorId: e.target.value })}>
+          onChange({ ...selectedCell, professor_id: e.target.value })}>
         <option value="">Selecione o professor</option>
         {professores.map(p => (
           <option key={p.id} value={p.id}>
-            {p.nome}
+            {p.name}
           </option>
         ))}
       </select>
 
       <select
-        value={selectedCell.salaId || ""}
+        value={selectedCell.sala_id || ""}
         onChange={(e) =>
-          onChange({ ...selectedCell, salaId: e.target.value })}>
+          onChange({ ...selectedCell, sala_id: e.target.value })}>
         <option value="">Selecione a sala</option>
         {salas.map(s => (
           <option key={s.id} value={s.id}>
-            {s.nome}
+            {s.name}
           </option>
         ))}
       </select>
@@ -66,9 +94,9 @@ function AsideEditor({ selectedCell, onChange, onSave, onClose, conflicts, grade
           <h4>Conflitos detectados:</h4>
 
           {conflicts.map((c, index) => {
-            const eixo = grade.grades.find(e => e.id === c.eixoId);
-            const curso = eixo?.cursos.find(cu => cu.id === c.cursoId);
-            const semestre = curso?.semestres.find(s => s.id === c.semestreId);
+            const eixo = grade.grades.find(e => e.id === c.eixo_id);
+            const curso = eixo?.cursos.find(cu => cu.id === c.curso_id);
+            const semestre = curso?.semestres.find(s => s.id === c.semestre_id);
 
             return (
               <div key={index} className="conflict-item">
@@ -77,9 +105,9 @@ function AsideEditor({ selectedCell, onChange, onSave, onClose, conflicts, grade
                 </strong>
 
                 <label>Eixo</label>
-                <p>{eixo?.nome}</p>
+                <p>{eixo?.name}</p>
                 <label>Curso</label>
-                <p>{curso?.nome}</p>
+                <p>{curso?.name}</p>
                 <label>Período</label>
                 <p>{semestre?.numero}° Semestre</p>
                 <label>Dia/Hora</label>

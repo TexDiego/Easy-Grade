@@ -39,7 +39,7 @@ function Datas() {
                     professores: "professores",
                     salas: "salas",
                     materias: "materias",
-                    cursos: "courses",
+                    cursos: "cursos",
                     eixos: "eixos"
                 };
 
@@ -79,7 +79,7 @@ function Datas() {
             };
 
             const endpointMap = {
-                cursos: "courses",
+                cursos: "cursos",
                 professores: "professores",
                 salas: "salas",
                 materias: "materias",
@@ -116,7 +116,7 @@ function Datas() {
                         ? {
                             ...item,
                             ...updatedItem,
-                            nome: updatedItem.nome || updatedItem.name
+                            name: updatedItem.name || updatedItem.name
                         }
                         : item
                 )
@@ -134,7 +134,7 @@ function Datas() {
 
         try {
             const endpointMap = {
-                cursos: "courses",
+                cursos: "cursos",
                 professores: "professores",
                 salas: "salas",
                 materias: "materias",
@@ -174,7 +174,7 @@ function Datas() {
                 ...prev,
                 {
                     ...createdItem,
-                    nome: createdItem.nome || createdItem.name
+                    name: createdItem.name || createdItem.name
                 }
             ]);
 
@@ -190,7 +190,7 @@ function Datas() {
 
         try {
             const endpointMap = {
-                cursos: "courses",
+                cursos: "cursos",
                 professores: "professores",
                 salas: "salas",
                 materias: "materias",
@@ -225,7 +225,7 @@ function Datas() {
 
     const normalizedData = rawData.map(item => ({
         ...item,
-        displayName: item.name || item.nome || ""
+        displayName: item.name || ""
     }));
 
     const filteredData = normalizedData.filter(item =>
