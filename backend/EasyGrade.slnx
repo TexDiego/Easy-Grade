@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EasyGrade.API/EasyGrade.API.csproj" />
+  <Project Path="EasyGrade.Application/EasyGrade.Application.csproj" />
+  <Project Path="EasyGrade.Domain/EasyGrade.Domain.csproj" />
+  <Project Path="EasyGrade.Infrastructure/EasyGrade.Infrastructure.csproj" />
+</Solution>
