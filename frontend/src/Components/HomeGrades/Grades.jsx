@@ -1,31 +1,18 @@
 import { Link } from "react-router-dom";
-import "./Grades.css"
+import styles from "./Grades.module.css"
 
-function Grades({ grades, onCreateGrade, isCreating }) {
+function Grades({ grades }) {
   return (
-    <section className="grades-section">
-      <button
-        className="grade-card create-card"
-        type="button"
-        onClick={onCreateGrade}
-        disabled={isCreating}
-      >
-        <span className="create-icon" aria-hidden="true"></span>
-        <span className="grade-title">
-          {isCreating ? "Criando..." : "Nova grade"}
-        </span>
-        <span className="grade-meta">Comece uma coleção de horários</span>
-      </button>
-
+    <section className={styles.gradesSection}>
       {grades.map(grade => (
         <Link
-          className="grade-card"
+          className={styles.gradeCard}
           key={grade.id}
           to={`/grade/${grade.id}`}
           state={{ grade }}
         >
-          <span className="grade-title">{grade.name}</span>
-          <span className="grade-meta">Grade acadêmica</span>
+          <span className={styles.gradeTitle}>{grade.name}</span>
+          <span className={styles.gradeMeta}>Grade acadêmica</span>
         </Link>
       ))}
     </section>

@@ -1,4 +1,4 @@
-.grades-section {
+.gradesSection {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: minmax(220px, 240px);
@@ -9,17 +9,17 @@
     scrollbar-color: #9aa9bd transparent;
 }
 
-.grades-section::-webkit-scrollbar {
+.gradesSection::-webkit-scrollbar {
     height: 10px;
 }
 
-.grades-section::-webkit-scrollbar-thumb {
+.gradesSection::-webkit-scrollbar-thumb {
     border-radius: 999px;
     background: #9aa9bd;
     border: 3px solid #ffffff;
 }
 
-.grade-card {
+.gradeCard {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -38,58 +38,18 @@
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-.grade-card:hover {
+.gradeCard:hover {
     border-color: #8da2c0;
     box-shadow: 0 16px 34px rgba(23, 32, 51, 0.12);
     transform: translateY(-2px);
 }
 
-.grade-card:focus-visible {
+.gradeCard:focus-visible {
     outline: 3px solid rgba(45, 101, 184, 0.28);
     outline-offset: 3px;
 }
 
-.create-card {
-    align-items: flex-start;
-    justify-content: space-between;
-    border-style: dashed;
-    cursor: pointer;
-    font: inherit;
-    text-align: left;
-}
-
-.create-card:disabled {
-    cursor: wait;
-    opacity: 0.72;
-    transform: none;
-}
-
-.create-icon {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 8px;
-    background: #1f6f5b;
-}
-
-.create-icon::before,
-.create-icon::after {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 3px;
-    border-radius: 999px;
-    background: #ffffff;
-}
-
-.create-icon::after {
-    transform: rotate(90deg);
-}
-
-.grade-title {
+.gradeTitle {
     display: block;
     margin-top: auto;
     overflow: hidden;
@@ -101,7 +61,7 @@
     white-space: nowrap;
 }
 
-.grade-meta {
+.gradeMeta {
     display: block;
     margin-top: 6px;
     color: #66758a;
@@ -110,7 +70,7 @@
 }
 
 @media (max-width: 680px) {
-    .grades-section {
+    .gradesSection {
         grid-auto-columns: minmax(190px, 76vw);
     }
 }

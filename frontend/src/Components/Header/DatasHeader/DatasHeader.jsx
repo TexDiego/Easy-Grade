@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import "./DatasHeader.css";
+import styles from "./DatasHeader.module.css";
 
 function DatasHeader() {
   return (
-    <div className="header">
+    <div className={styles.header}>
         <Link to={"/"}>
-            <button className='header_btn'>Voltar</button>
+            <button className={styles.header_btn}>Voltar</button>
         </Link>
-            <h1 className='header_title'>Dados</h1>
+            <h1 className={styles.header_title}>Dados</h1>
     </div>
   )
 }

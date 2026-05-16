@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom'
-import "./GradeHeader.css"
+import styles from "./GradeHeader.module.css"
 
 function GradeHeader({ grade, isEdit, SwitchIsEdit }) {
   return (
-    <div className="header">
-      <div className="left">
+    <div className={styles.header}>
+      <div className={styles.left}>
         <Link to={"/"}>
-          <button className='button'>Voltar</button>
+          <button className={styles.button}>Voltar</button>
         </Link>
       </div>
 
-      <h1>{grade.name}</h1>
+      <h1 className={styles.h1}>{grade.name}</h1>
 
-      <div className="right">
+      <div className={styles.right}>
         <button
-          className={`button ${isEdit ? "active" : ""}`}
+          className={`button ${isEdit ? styles.active : styles.button}`}
           onClick={SwitchIsEdit}>
           {isEdit ? "Visualizar" : "Editar"}
         </button>
