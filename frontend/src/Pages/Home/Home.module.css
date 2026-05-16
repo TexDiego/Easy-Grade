@@ -17,7 +17,7 @@
     position: relative;
 
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
     justify-content: space-between;
 
     gap: 24px;
@@ -40,21 +40,77 @@
         0 12px 32px rgba(23, 32, 51, 0.08);
 }
 
-.homeEyebrow {
-    display: block;
+.createGradeBox {
+    padding: 0;
+    display: flex;
+    flex: 1;
+    gap: 5px;
+    min-height: 42px;
+}
 
-    margin-bottom: 10px;
+.createActions {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
 
-    color: #596579;
+.createInput {
+    flex: 1;
+    padding: 0 16px;
 
-    font-size: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.createBtn {
+    background-color: #244999;
+    color: white;
     font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+.createBtn:hover {
+    transform: translateY(-1px);
+}
+.createBtn:disabled {
+    background-color: #6b6b6b;
+    cursor: not-allowed;
+}
 
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+.cancelCreationBtn {
+    background-color: rgb(175, 54, 54);
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.cancelCreationBtn:hover {
+    transform: translateY(-1px);
 }
 
 .h1 {
+    margin: 0;
+
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.homeTitle {
     margin: 0;
 
     font-size: 42px;
@@ -75,11 +131,10 @@
 
 .headerActions {
     display: flex;
+    flex: 1;
     align-items: center;
 
     gap: 12px;
-
-    flex-shrink: 0;
 }
 
 .primaryButton {
@@ -156,7 +211,7 @@
 
 .statsSection {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 
     gap: 18px;
 }

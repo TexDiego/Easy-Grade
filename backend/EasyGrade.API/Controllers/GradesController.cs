@@ -115,4 +115,20 @@ public class GradesController : ControllerBase
 
         return Ok(grade);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var entity = await _context.Grades
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (entity == null)
+            return NotFound();
+
+        _context.Grades.Remove(entity);
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

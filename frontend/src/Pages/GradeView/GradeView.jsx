@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ScheduleGrid from "../../Components/ScheduleGrid/ScheduleGrid";
 import AsideEditor from "../../Components/AsideEditor/AsideEditor";
 import GradeHeader from "../../Components/Header/GradeHeader/GradeHeader";
@@ -9,6 +9,7 @@ import { UseGradeStructure } from "./Hooks/UseGradeStructure";
 import { UseSchedule } from "./Hooks/UseSchedule";
 import UseConflicts from "./Hooks/UseConflicts";
 import "./GradeView.css";
+import { request } from "../../Services/ApiClient";
 
 function GradeView() {
   const [currentGrade, setCurrentGrade] = useState(null);
@@ -21,6 +22,7 @@ function GradeView() {
   const [isEdit, setIsEdit] = useState(false);
   const { updateAula } = UseSchedule(currentGrade, setCurrentGrade);
   const isAsideOpen = selectedCell && isEdit;
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -49,6 +51,25 @@ function GradeView() {
 
     loadData();
   }, [id]);
+
+  async function deleteGrade() {
+    const confirmed = window.confirm(
+      "Deseja realmente excluir esta grade?"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await request(`/grades/${id}`, {
+        method: "DELETE"
+      });
+
+      alert("Grade removida");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const { AdicionarEixo, AdicionarCurso, AdicionarSemestre, ExcluirEixo, ExcluirCurso, ExcluirSemestre } = UseGradeStructure(currentGrade, setCurrentGrade);
   const conflicts = UseConflicts(currentGrade);
@@ -263,6 +284,11 @@ function GradeView() {
             </div>
           )}
         </div>
+
+        <button
+          onClick={deleteGrade}>
+          Excluir grade
+        </button>
       </div>
 
       {selectedCell && isEdit && (
